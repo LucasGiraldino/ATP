@@ -42,6 +42,7 @@ int VerificaNota (TpNota Vet[TF], int TL, char RaAux[13], int CodAux, int deci);
 // FUNCOES DE CADADTRO
 void CadastraAluno (TpAluno Vet[TF], int &TL, char Aux[]);
 void CadastrarNota (TpNota VetNota[TF], int &TLNota, TpAluno VetAluno[TF], int TLAluno, TpDisciplina VetDisc[TF], int TLDisc);
+void CadastrarDisciplina (TpDisciplina Vet[TF], int &TL);
 
 // MENSAGEM DE VETOR CHEIO
 void CadCheio (int decisao);
@@ -150,6 +151,7 @@ void Executar (void)
                     {
                         case 'A':
                             clrscr();
+                            CadastrarDisciplina(Disciplina, TLDisc);
                             getch();
                             break;
                         case 'B':
@@ -349,6 +351,106 @@ void CadastraAluno (TpAluno Vet[TF], int &TL, char Aux[])
         printf ("CADASTRO CHEIO!!\n");
     }
     textcolor(WHITE);
+}
+
+void CadastrarNota (TpNota VetNota[TF], int &TLNota, TpAluno VetAluno[TF], int TLAluno, TpDisciplina VetDisc[TF], int TLDisc)
+{
+    char RAaux[13];
+    int posAluno, CodAux, posDisc, posNota;
+
+    CriaRAAux(RAaux);
+    if (VerificaAluno(VetAluno, TLAluno, RAaux, 1))
+    {
+        CriaDiscAux(CodAux);
+        posAluno = VerificaAluno(VetAluno, TLAluno, RAaux, 2);
+        if (VerificaDisciplina(VetDisc, TLDisc, CodAux, 1))
+        {
+            posDisc = VerificaDisciplina(VetDisc, TLDisc, CodAux, 2);
+            if (!VerificaNota(VetNota, TLNota, RAaux, CodAux, 1))
+            {
+                printf ("\n----- ALUNO -----\n");
+                printf ("RA: %s\n", RAaux);
+                printf ("NOME: %s\n", VetAluno[posAluno].Nome);
+                printf ("----- DISCIPLINA -----\n");
+                printf ("COD DA DISCIPLINA: %d\n", CodAux);
+                printf ("DISCIPLINA: %s\n", VetDisc[posDisc].Disciplina);
+                printf ("-------------------------\n");
+                printf ("NOTA: ");
+                scanf ("%f", &VetNota[TLNota].Nota);
+                VetNota[TLNota].CodDisc = VetDisc[posDisc].CodDisc;
+                strcpy(VetNota[TLNota].RA, RAaux);
+                textcolor (GREEN);
+                printf ("NOTA DO ALUNO CADASTRADO COM SUCESSO!!\n");
+                textcolor(WHITE);
+                TLNota++;
+            }
+            else    
+            {
+                posNota = VerificaNota(VetNota, TLNota, RAaux, CodAux, 2);
+                textcolor(RED);
+                printf ("NOTA DE ALUNO JA CADASTRADO!!\n");
+                textcolor(WHITE);
+                printf ("----- ALUNO -----\n");
+                printf ("RA: %s\n", RAaux);
+                printf ("NOME: %s\n", VetAluno[posAluno].Nome);
+                printf ("----- DISCIPLINA -----\n");
+                printf ("COD DA DISCIPLINA: %d\n", CodAux);
+                printf ("DISCIPLINA: %s\n", VetDisc[posDisc].Disciplina);
+                printf ("----- NOTA -------\n");
+                printf ("NOTA: %.1f\n", VetNota[posNota].Nota);
+            }
+        }
+        else
+        {
+            textcolor(RED);
+            printf ("DISCIPLINA NAO ENCONTRADA!!\n");
+            textcolor(WHITE);
+        }
+    }
+    else    
+    {
+        textcolor(RED);
+        printf ("ALUNO NAO ENCONTRADO!!\n");
+        textcolor(WHITE);
+    }
+}
+
+void CadastrarDisciplina (TpDisciplina Vet[TF], int &TL)
+{
+    int Aux;
+    if (TL < TF)
+    {
+        printf ("[0] - SAIR\n");
+        CriaDiscAux(Aux);
+        while (TL < TF && Aux != 0)
+        {
+            if (!VerificaDisciplina(Vet, TL, Aux, 1))
+            {
+                Vet[TL].CodDisc = Aux;
+                printf ("NOME DA DISCIPLINA: ");
+                fflush(stdin);
+                gets(Vet[TL].Disciplina);
+                TL++;
+                textcolor(GREEN);
+                printf ("DISCIPLINA CADASTRADA COM SUCESSO!!\n");
+                textcolor(WHITE);
+            }
+            else    
+            {
+                textcolor(RED);
+                printf ("DISCIPLINA JA CADASTRADA!!\n");
+                textcolor(WHITE);
+            }
+            printf ("[0] - SAIR\n");
+            CriaDiscAux(Aux);
+        }
+    }
+    else    
+    {
+        textcolor(RED);
+        printf ("CADASTRO DE DISCIPLINA CHEIO!!\n");
+        textcolor(WHITE);
+    }
 }
 
 void CadCheio (int decisao)
@@ -556,61 +658,3 @@ void ExcluirAluno (TpAluno Vet[TF], int &TL)
     }
 }
 
-void CadastrarNota (TpNota VetNota[TF], int &TLNota, TpAluno VetAluno[TF], int TLAluno, TpDisciplina VetDisc[TF], int TLDisc)
-{
-    char RAaux[13];
-    int posAluno, CodAux, posDisc, posNota;
-
-    CriaRAAux(RAaux);
-    if (VerificaAluno(VetAluno, TLAluno, RAaux, 1))
-    {
-        CriaDiscAux(CodAux);
-        posAluno = VerificaAluno(VetAluno, TLAluno, RAaux, 2);
-        if (VerificaDisciplina(VetDisc, TLDisc, CodAux, 1))
-        {
-            posDisc = VerificaDisciplina(VetDisc, TLDisc, CodAux, 2);
-            if (VerificaNota(VetNota, TLNota, RAaux, CodAux, 1))
-            {
-                printf ("----- ALUNO -----\n");
-                printf ("RA: %s\n", RAaux);
-                printf ("NOME: %s\n", VetAluno[posAluno].Nome);
-                printf ("----- DISCIPLINA -----\n");
-                printf ("COD DA DISCIPLINA: %d\n", CodAux);
-                printf ("DISCIPLINA: %s\n", VetDisc[posDisc].Disciplina);
-                printf ("-------------------------\n");
-                printf ("NOTA: ");
-                scanf ("%f", &VetNota[TLNota].Nota);
-                VetNota[TLNota].CodDisc = VetDisc[posDisc].CodDisc;
-                strcpy(VetNota[TLNota].RA, RAaux);
-                TLNota++;
-            }
-            else    
-            {
-                posNota = VerificaNota(VetNota, TLNota, RAaux, CodAux, 2);
-                textcolor(RED);
-                printf ("NOTA DE ALUNO JA CADASTRADO!!\n");
-                textcolor(WHITE);
-                printf ("----- ALUNO -----\n");
-                printf ("RA: %s\n", RAaux);
-                printf ("NOME: %s\n", VetAluno[posAluno].Nome);
-                printf ("----- DISCIPLINA -----\n");
-                printf ("COD DA DISCIPLINA: %d\n", CodAux);
-                printf ("DISCIPLINA: %s\n", VetDisc[posDisc].Disciplina);
-                printf ("----- NOTA -------\n");
-                printf ("NOTA: %.1f", VetNota[posNota].Nota);
-            }
-        }
-        else
-        {
-            textcolor(RED);
-            printf ("DISCIPLINA NAO ENCONTRADA!!\n");
-            textcolor(WHITE);
-        }
-    }
-    else    
-    {
-        textcolor(RED);
-        printf ("ALUNO NAO ENCONTRADO!!\n");
-        textcolor(WHITE);
-    }
-}
