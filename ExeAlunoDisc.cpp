@@ -604,11 +604,13 @@ void CadastrarNota (TpNota VetNota[TF], int &TLNota, TpAluno VetAluno[TF], int T
         {
             textcolor(RED);
             printf ("DISCIPLINA NAO ENCONTRADA!!\n");
+            textcolor(WHITE);
         }
     }
     else    
     {
         textcolor(RED);
         printf ("ALUNO NAO ENCONTRADO!!\n");
+        textcolor(WHITE);
     }
 }
