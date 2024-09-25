@@ -4,7 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <locale.h> 
-#include <windows.h>
+// #include <windows.h>
 
 #define TF 5
 // Defini��o da estrutura de um aluno.
@@ -20,10 +20,10 @@ struct TpDisciplina
     char Disciplina[20];
 };
 // Estrutura que armazena o relacionamento entre aluno e disciplina.
-struct TpIAlunoDisci
+struct TpNota
 {
     char RA[13];
-    char CodDisc[13];
+    int CodDisc;
     float Nota;
 };
 // Fun��es principais
@@ -39,9 +39,12 @@ char MenuConfirmaAltera (void); // Fun��o para confirmar altera��o.
 
 // FUNCOES DE VERIFICACAO
 int VerificaAluno (TpAluno Vet[TF], int TL, char Aux[], int deci);// Verifica a exist�ncia do aluno.
+int VerificaDisciplina (TpDisciplina Vet[TF], int TL, int Aux, int deci);
+int VerificaNota (TpNota Vet[TF], int TL, char RaAux[13], int CodAux, int deci);
 
 // FUNCOES DE CADADTRO
 void CadastraAluno (TpAluno Vet[TF], int &TL, char Aux[]);// Cadastra um novo aluno.
+void CadastrarNota (TpNota VetNota[TF], int &TLNota, TpAluno VetAluno[TF], int TLAluno, TpDisciplina VetDisc[TF], int TLDisc);
 
 // MENSAGEM DE VETOR CHEIO
 void CadCheio (int decisao); // Exibe mensagem de vetor cheio.
@@ -54,6 +57,7 @@ void OrdenarAluno (TpAluno Vetor[TF], int TL, char op); // Ordena a lista de alu
 
 // FUNCAO PRA CRIAR UM AUX
 void CriaRAAux(char Aux[]); // Fun��o que cria um RA auxiliar.
+void CriaDiscAux (int &Aux);
 
 // FUNCOES DE ALTERAR DADOS
 void AlterarAluno (TpAluno Vetor[TF], int TL);  // Fun��o que altera o nome de um aluno.
@@ -102,7 +106,7 @@ void PainelPrincipal(void)
 	Moldura(10,1,115,30,0,2);  // Desenha a moldura principal.
 	Moldura(11,2,114,4,0,2);// Desenha uma segunda moldura dentro da principal.
 	textcolor(15);// Define a cor do texto.
-	gotoxy(35,3);printf("ALUNOES E DISCIPLINAS");// T�tulo no painel.
+	gotoxy(50,3);printf("ALUNOES E DISCIPLINAS");// T�tulo no painel.
 
 	// Molduras internas.
 	Moldura(11,5,50,26,0,2);
@@ -121,6 +125,7 @@ char Escolha(void){
 	gotoxy(13,11);printf ("[B] - Disciplinas");
 	gotoxy(13,12);printf ("[C] - Notas de Alunos");
 	gotoxy(13,13);printf("[D] - Entradas prontas");
+    gotoxy(13,14);printf ("[ESC] - SAIR");
 	gotoxy(21,28); return toupper(getche()); // Captura a escolha do usu�rio.
 }
 // Fun��o que insere entradas autom�ticas para alunos (RA e nome).
@@ -147,7 +152,7 @@ void Executar (void)
 	PainelPrincipal(); // Chama o painel principal.
     TpAluno Alunos[TF];  // Vetor de alunos.
     TpDisciplina Disciplina[TF];  // Vetor de disciplinas.
-    TpIAlunoDisci Notas[TF];// Vetor de notas.
+    TpNota Notas[TF];// Vetor de notas.
     
      // Loop principal do programa.
     do
@@ -181,7 +186,7 @@ void Executar (void)
                                     {
                                         textcolor(4);
                                       	gotoxy(21,28); printf ("ALNUO JA CADASTRADO!!\n");
-                                        Sleep(1500);
+                                        // Sleep(1500);
                                         textcolor(15);
                                     }
                                     if (TLAluno == TF)
@@ -192,7 +197,7 @@ void Executar (void)
                             }
                             else    
                                 CadCheio(1);// Se o vetor estiver cheio.
-                            getch();
+                            gotoxy(57,6); getch();
                             break;
                         case 'B':  // Exibir alunos.
                             clrscr();
@@ -261,12 +266,12 @@ void Executar (void)
 	        		cont++;
 	        		textcolor(10);
 	        		gotoxy(21,28);printf("Entradas inseridas com sucesso");
-	        		Sleep(1500);
+	        		// Sleep(1500);
 					clrscr();	
         		}else{
         			textcolor(4);
         			gotoxy(21,28);printf("Entradas j� foram inseridas!!!");
-        			Sleep(1500);
+        			// Sleep(1500);
         			clrscr();
         		}
         		textcolor(15);
@@ -419,7 +424,7 @@ void CadastraAluno (TpAluno Vet[TF], int &TL, char Aux[])
         TL++; // incrementa o valor l�gico do vetor
         textcolor(10);
         gotoxy(21,28); printf ("CADASTRADO COM SUCESSO!!\n");
-        Sleep(1500);//Tempo de 1,5 segundos
+        // Sleep(1500);//Tempo de 1,5 segundos
         textcolor(15);//reseta a cor 
     }
     else
@@ -427,7 +432,7 @@ void CadastraAluno (TpAluno Vet[TF], int &TL, char Aux[])
     	//Cadastro cheio 
         textcolor(4);
         gotoxy(21,28); printf ("CADASTRO CHEIO!!\n");
-        Sleep(1500);
+        // Sleep(1500);
     }
     textcolor(15);
 }
@@ -437,13 +442,13 @@ void CadCheio (int decisao){
 	    case 1:
 	        textcolor(4);
 	        gotoxy(21,28); printf ("CADASTRO DE ALUNO CHEIO!!\n");//Printa quando o vetor estiver cheio
-	        Sleep(1500);
+	        // Sleep(1500);
 	        textcolor(15);
 	        break;
 	    case 2:
 	        textcolor(4);
 	        gotoxy(21,28); printf ("CADASTRO DE DISCIPLINAS CHEIO!!\n");//Printa quando o vetor estiver cheio
-	        Sleep(1500);
+	        // Sleep(1500);
 	        textcolor(15);
 	        break;
     }
@@ -494,7 +499,7 @@ void ExibirAluno (TpAluno Vetor[TF], int Tl)
     {
         textcolor(4);
         printf ("Não há Alunos cadastrados!!\n");
-        Sleep(1500);
+        // Sleep(1500);
     }
     textcolor(15);
 }
@@ -537,7 +542,7 @@ void OrdenarAluno (TpAluno Vetor[TF], int TL, char op)
         	PainelPrincipal(); 
             textcolor(4);
             gotoxy(21,28);printf ("Não há Dados cadastrados\n");
-			Sleep(1500);
+			// Sleep(1500);
             break;
     }
 }
@@ -595,7 +600,153 @@ char MenuConfirmaAltera (void)
    gotoxy(13,12);printf ("[N] - NÃo\n");
     gotoxy(21,28);return toupper(getch());
 }
-//void CadastrarNota(TpIAlunoDisci VTN[TF], int &TLNota){
+
+int VerificaNota (TpNota Vet[TF], int TL, char RaAux[13], int CodAux, int deci)
+{
+    int pos=0;
+    while (pos < TL && strcasecmp(RaAux, Vet[pos].RA) != 0 && Vet[pos].CodDisc != CodAux)
+        pos++;
+    switch (deci)
+    {
+        case 1:
+            if (pos < TL)
+                return 1;
+            else 
+                return 0;
+            break;
+        case 2:
+            if (pos<TL)
+                return pos;
+            else    
+                return -1;
+            break;
+    }
+}
+
+// void CadastrarNota (TpNota VetNota[TF], int &TLNota, TpAluno VetAluno[TF], int TLAluno, TpDisciplina VetDisc[TF], int TLDisc)
+// {
+//     char RAaux[13];
+//     int posAluno, CodAux, posDisc, posNota;
+//     CriaRAAux(RAaux);
+//     if (VerificaAluno(VetAluno, TLAluno, RAaux, 1))
+//     {
+//         CriaDiscAux(CodAux);
+//         posAluno = VerificaAluno(VetAluno, TLAluno, RAaux, 2);
+//         if (VerificaDisciplina(VetDisc, TLDisc, CodAux, 1))
+//         {
+//             posDisc = VerificaDisciplina(VetDisc, TLDisc, CodAux, 2);
+//             if (!VerificaNota(VetNota, TLNota, RAaux, CodAux, 1))
+//             {
+//                 printf ("----- ALUNO -----\n");
+//                 printf ("RA: %s\n", RAaux);
+//                 printf ("NOME: %s\n", VetAluno[posAluno].Nome);
+//                 printf ("----- DISCIPLINA -----\n");
+//                 printf ("COD DA DISCIPLINA: %d\n", CodAux);
+//                 printf ("DISCIPLINA: %s\n", VetDisc[posDisc].Disciplina);
+//                 printf ("-------------------------\n");
+//                 printf ("NOTA: ");
+//                 scanf ("%f", &VetNota[TLNota].Nota);
+//                 VetNota[TLNota].CodDisc = VetDisc[posDisc].CodDisc;
+//                 strcpy(VetNota[TLNota].RA, RAaux);
+//                 TLNota++;
+//             }
+//             else    
+//             {
+//                 posNota = VerificaNota(VetNota, TLNota, RAaux, CodAux, 2);
+//                 textcolor(RED);
+//                 printf ("NOTA DE ALUNO JA CADASTRADO!!\n");
+//                 textcolor(WHITE);
+//                 printf ("----- ALUNO -----\n");
+//                 printf ("RA: %s\n", RAaux);
+//                 printf ("NOME: %s\n", VetAluno[posAluno].Nome);
+//                 printf ("----- DISCIPLINA -----\n");
+//                 printf ("COD DA DISCIPLINA: %d\n", CodAux);
+//                 printf ("DISCIPLINA: %s\n", VetDisc[posDisc].Disciplina);
+//                 printf ("----- NOTA -------\n");
+//                 printf ("NOTA: %.1f", VetNota[posNota].Nota);
+//             }
+//         }
+//         else
+//         {
+//             textcolor(RED);
+//             printf ("DISCIPLINA NAO ENCONTRADA!!\n");
+//             textcolor(WHITE);
+//         }
+//     }
+//     else    
+//     {
+//         textcolor(RED);
+//         printf ("ALUNO NAO ENCONTRADO!!\n");
+//         textcolor(WHITE);
+//     }
+// }
+
+void CadastrarDisciplina (TpDisciplina Vet[TF], int &TL)
+{
+    int Aux;
+    if (TL < TF)
+    {
+        printf ("[0] - SAIR\n");
+        CriaDiscAux(Aux);
+        while (TL < TF && Aux != 0)
+        {
+            if (!VerificaDisciplina(Vet, TL, Aux, 1))
+            {
+                Vet[TL].CodDisc = Aux;
+                printf ("NOME DA DISCIPLINA: ");
+                fflush(stdin);
+                gets(Vet[TL].Disciplina);
+                TL++;
+                textcolor(GREEN);
+                printf ("DISCIPLINA CADASTRADA COM SUCESSO!!\n");
+                textcolor(WHITE);
+            }
+            else    
+            {
+                textcolor(RED);
+                printf ("DISCIPLINA JA CADASTRADA!!\n");
+                textcolor(WHITE);
+            }
+            printf ("[0] - SAIR\n");
+            CriaDiscAux(Aux);
+        }
+    }
+    else    
+    {
+        textcolor(RED);
+        printf ("CADASTRO DE DISCIPLINA CHEIO!!\n");
+        textcolor(WHITE);
+    }
+}
+
+int VerificaDisciplina (TpDisciplina Vet[TF], int TL, int Aux, int deci)
+{
+    int pos=0;
+    while (pos < TL && Vet[pos].CodDisc != Aux)
+        pos++;
+    switch (deci)
+    {
+        case 1:
+            if (pos<TL)
+                return 1;
+            else    
+                return 0;
+            break;
+        case 2:
+            if (pos < TL)
+                return pos;
+            else    
+                return -1;
+            break;
+    }
+}
+
+void CriaDiscAux (int &Aux)
+{
+    printf ("COD DA DISCIPLINA: ");
+    scanf ("%d", &Aux);
+}
+//void CadastrarNota(TpNota VTN[TF], int &TLNota){
 //	 
 //	 int pos, 
 //	 printf("\nCadastrar notas");
