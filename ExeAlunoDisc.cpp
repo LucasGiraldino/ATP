@@ -719,12 +719,32 @@ void CadastrarDisciplina (TpDisciplina Vet[TF], int &TL)
     }
 }
 
-
-
 void CriaDiscAux (int &Aux)
 {
     printf ("COD DA DISCIPLINA: ");
     scanf ("%d", &Aux);
+}
+
+int VerificaDisciplina (TpDisciplina Vet[TF], int TL, int Aux, int deci)
+{
+    int pos=0;
+    while (pos < TL && Aux != Vet[pos].CodDisc)
+        pos++;
+    switch (deci)
+    {
+        case 1:
+            if (pos < TL)
+                return 1;
+            else    
+                return 0;
+            break;
+        case 2:
+            if (pos < TL)
+                return pos;
+            else    
+                return -1;
+            break;
+    }
 }
 //void CadastrarNota(TpNota VTN[TF], int &TLNota){
 //	 
