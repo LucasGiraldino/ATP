@@ -4,8 +4,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <locale.h> 
-#include <unistd.h>
 // #include <windows.h>
+#include <unistd.h>
 
 #define TF 5
 // Defini��o da estrutura de um aluno.
@@ -37,6 +37,7 @@ char MenuNota(void); // Fun��o para menu de notas.
 char MenuDisciplina (void);  // Fun��o para menu de disciplinas.
 char MenuOrdena(char op, int TL); // Fun��o para menu de ordena��o.
 char MenuConfirmaAltera (void); // Fun��o para confirmar altera��o.
+void Enter(void); // Funcao Moldura ENTER
 
 // FUNCOES DE VERIFICACAO
 int VerificaAluno (TpAluno Vet[TF], int TL, char Aux[], int deci);// Verifica a exist�ncia do aluno.
@@ -73,6 +74,44 @@ int main (void)
     textcolor(15);// Define a cor do texto.
     Executar();
     return 0;
+}
+
+void Enter(void)
+{
+    int i;
+    for (i=16; i<31;i++)
+    {
+        gotoxy(i,9);
+        printf ("%c", 95);
+    }
+    for (i=10; i<14; i++)
+    {
+        gotoxy(16,i);
+        printf ("%c", 124);
+    }
+    for (i=16;i<20;i++)
+    {
+        gotoxy(i,14); 
+        printf ("%c", 150);
+    }
+    for (i=15; i<19;i++)
+    {
+        gotoxy(19,i); 
+        printf ("%c", 124);
+    }
+    for (i=10;i<19;i++)
+    {
+        gotoxy(30,i); 
+        printf ("%c", 124);
+    }
+    for (i=19;i<31;i++)
+    {
+        gotoxy(i,19); 
+        printf ("%c", 150);
+    }
+    gotoxy(20,11); printf ("[ENTER]");
+    gotoxy(21, 21); printf ("PARA SAIR");
+    gotoxy(21,8); printf ("TECLE");
 }
 // Fun��o que desenha a moldura na tela (layout do painel)
 void Moldura( int CI, int LI, int CF, int LF, int CorT, int CorF)
@@ -200,7 +239,7 @@ void Executar (void)
                             }
                             else    
                                 CadCheio(1);// Se o vetor estiver cheio.
-                            gotoxy(57,6); getch();
+                            // x
                             break;
                         case 'B':  // Exibir alunos.
                             clrscr();
@@ -331,33 +370,6 @@ char MenuNota(void)
     gotoxy(13,14); printf ("[D] - Excluir Notas\n");
     gotoxy(13,15); printf ("[ENTER] - SAIR");
     gotoxy(21,28);return toupper(getch());
-}
-//Exibir alunos que est�o cadastrados 
-void Exibir (TpAluno Vetor[TF], int Tl, int decisao)
-{
-    int i, j;
-    if (Tl)
-    {
-        switch (decisao)
-        {
-            case 1:
-                break;
-            case 2:
-                for (i=0;i<Tl;i++)
-                {
-                    printf ("COD DISC.: %s\n", Vetor[i].RA);
-                    printf ("NOME: %s\n", Vetor[i].Nome);
-                    printf ("------------------------------------\n");
-                }
-            break;
-        }
-    }
-    else   
-    {
-        textcolor(4);
-        gotoxy(21,28); printf ("Não há Alunos cadastrados!!\n"); //Caso n�o exista alunos castrados no vetor.
-    }
-    textcolor(15); //Reseta a cor para white 
 }
 //ordena os alunos pelo RA ou pelo Nome 
 void Ordenar (TpAluno Vetor[TF], int TL, char op)
@@ -499,23 +511,24 @@ char MenuOrdena(char op, int TL)
 //Exibe aluno 
 void ExibirAluno (TpAluno Vetor[TF], int Tl)
 {
-    int i, j;
+    int i, j, pos;
     if (Tl)
     {
         for (i=0;i<Tl;i++)
         {
+            pos = strlen(Vetor[i].RA);
             printf ("RA: ");
-            for(j=0;j<strlen(Vetor[i].RA);j++)
+            for(j=0;j<pos;j++)
             {
                 printf ("%c", Vetor[i].RA[j]);
-                sleep(1);
+                sleep(0.10);
             }
             printf("\n");
             printf ("NOME: ");
             for (j=0;j<strlen(Vetor[i].Nome);j++)
             {
                 printf ("%c", Vetor[i].Nome[j]);
-                sleep(1);
+                sleep(0.10);
             }
             printf ("\n");
             printf ("------------------------------------\n");
@@ -577,6 +590,7 @@ void OrdenarAluno (TpAluno Vetor[TF], int TL, char op)
 void CriaRAAux(char Aux[])
 {
 	PainelPrincipal();
+    gotoxy(30,9); Enter();
     gotoxy(53,6);printf ("RA: ");
     fflush(stdin);
     gotoxy(57,6);gets(Aux);
