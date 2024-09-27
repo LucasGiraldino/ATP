@@ -1,13 +1,14 @@
 #ifndef CONIO_H
-#define CONIO_H
 
-#include <termios.h>
+
+
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <termios.h>
+#define CONIO_H
 #define cprintf printf
 #define cscanf scanf
 #define cgets gets
