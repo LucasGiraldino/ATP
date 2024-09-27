@@ -79,6 +79,7 @@ int main (void)
 void Enter(void)
 {
     int i;
+    textcolor(WHITE);
     for (i=16; i<31;i++)
     {
         gotoxy(i,9);
@@ -160,7 +161,7 @@ void PainelPrincipal(void)
 // Fun��o para captura de escolha do menu principal.
 char Escolha(void){
 	textcolor(15);
-	gotoxy(23,6);printf (" MENU ESCOLHA");// T�tulo do menu.
+	gotoxy(13,6);printf ("---------- MENU ESCOLHA ------------");// T�tulo do menu.
 	// Op��es do menu.
 	gotoxy(13,10);printf ("[A] - Alnuos");
 	gotoxy(13,11);printf ("[B] - Disciplinas");
@@ -511,27 +512,28 @@ char MenuOrdena(char op, int TL)
 //Exibe aluno 
 void ExibirAluno (TpAluno Vetor[TF], int Tl)
 {
-    int i, j, pos;
+    int i, j, c=53, l;
     if (Tl)
     {
+        PainelPrincipal();
+        Enter();
+        textcolor(WHITE);
+        l=6;
         for (i=0;i<Tl;i++)
         {
-            pos = strlen(Vetor[i].RA);
-            printf ("RA: ");
-            for(j=0;j<pos;j++)
-            {
-                printf ("%c", Vetor[i].RA[j]);
-                sleep(0.10);
-            }
-            printf("\n");
-            printf ("NOME: ");
-            for (j=0;j<strlen(Vetor[i].Nome);j++)
-            {
-                printf ("%c", Vetor[i].Nome[j]);
-                sleep(0.10);
-            }
-            printf ("\n");
+            gotoxy(53,l); 
+            printf ("RA: %s", Vetor[i].RA);
+            // sleep(1/2);
+            // Sleep (1500); 
+            l++;
+            gotoxy(53,l);
+            printf ("NOME: %s", Vetor[i].Nome);
+            // sleep(1/2);
+            // Sleep (1500);
+            l++;
+            gotoxy(53, l); 
             printf ("------------------------------------\n");
+            l++;
         }
     }
     else   
@@ -638,7 +640,7 @@ char MenuConfirmaAltera (void)
 {
     gotoxy(12,6) ;printf ("CONFIRMA A ALTERAÇÃO?\n");
     gotoxy(13,11);printf ("[S] - SIM\n");
-   gotoxy(13,12);printf ("[N] - NÃo\n");
+    gotoxy(13,12);printf ("[N] - NÃo\n");
     gotoxy(21,28);return toupper(getch());
 }
 
