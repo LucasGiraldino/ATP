@@ -4,6 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <locale.h> 
+#include <unistd.h>
 // #include <windows.h>
 
 #define TF 5
@@ -274,11 +275,13 @@ void Executar (void)
 	        		textcolor(10);
 	        		gotoxy(21,28);printf("Entradas inseridas com sucesso");
 	        		// Sleep(1500);
+                    sleep(1.5);
 					clrscr();	
         		}else{
         			textcolor(4);
         			gotoxy(21,28);printf("Entradas j� foram inseridas!!!");
         			// Sleep(1500);
+                    usleep(1500);
         			clrscr();
         		}
         		textcolor(15);
@@ -300,6 +303,7 @@ char MenuAluno (void)
     gotoxy(13,12);printf ("[C] - Ordenar Alunos");
     gotoxy(13,13);printf ("[D] - Alterar Nome de Aluno");
     gotoxy(13,14);printf ("[E] - Excluir Aluno");
+    gotoxy(13,15); printf ("[ESC] - SAIR");
     gotoxy(21,28);return toupper(getche());
 }
 // Menu Disciplinas
@@ -325,23 +329,18 @@ char MenuNota(void)
     gotoxy(13,12); printf ("[B] - Exibir nota\n");
    	gotoxy(13,13);  printf ("[C] - Alterar Notas\n");
     gotoxy(13,14); printf ("[D] - Excluir Notas\n");
+    gotoxy(13,15); printf ("[ENTER] - SAIR");
     gotoxy(21,28);return toupper(getch());
 }
 //Exibir alunos que est�o cadastrados 
 void Exibir (TpAluno Vetor[TF], int Tl, int decisao)
 {
-    int i;
+    int i, j;
     if (Tl)
     {
         switch (decisao)
         {
             case 1:
-                for (i=0;i<Tl;i++)
-                {
-                    printf ("RA: %s\n", Vetor[i].RA);
-                    printf ("NOME: %s\n", Vetor[i].Nome);
-                    printf ("------------------------------------\n");
-                }
                 break;
             case 2:
                 for (i=0;i<Tl;i++)
@@ -437,6 +436,7 @@ void CadastraAluno (TpAluno Vet[TF], int &TL, char Aux[])
         TL++; // incrementa o valor l�gico do vetor
         textcolor(10);
         gotoxy(21,28); printf ("CADASTRADO COM SUCESSO!!\n");
+        sleep(1.7);
         // Sleep(1500);//Tempo de 1,5 segundos
         textcolor(15);//reseta a cor 
     }
@@ -445,6 +445,7 @@ void CadastraAluno (TpAluno Vet[TF], int &TL, char Aux[])
     	//Cadastro cheio 
         textcolor(4);
         gotoxy(21,28); printf ("CADASTRO CHEIO!!\n");
+        sleep(1.7);
         // Sleep(1500);
     }
     textcolor(15);
@@ -498,13 +499,25 @@ char MenuOrdena(char op, int TL)
 //Exibe aluno 
 void ExibirAluno (TpAluno Vetor[TF], int Tl)
 {
-    int i;
+    int i, j;
     if (Tl)
     {
         for (i=0;i<Tl;i++)
         {
-            printf ("RA: %s\n", Vetor[i].RA);
-            printf ("NOME: %s\n", Vetor[i].Nome);
+            printf ("RA: ");
+            for(j=0;j<strlen(Vetor[i].RA);j++)
+            {
+                printf ("%c", Vetor[i].RA[j]);
+                sleep(1);
+            }
+            printf("\n");
+            printf ("NOME: ");
+            for (j=0;j<strlen(Vetor[i].Nome);j++)
+            {
+                printf ("%c", Vetor[i].Nome[j]);
+                sleep(1);
+            }
+            printf ("\n");
             printf ("------------------------------------\n");
         }
     }
@@ -512,6 +525,7 @@ void ExibirAluno (TpAluno Vetor[TF], int Tl)
     {
         textcolor(4);
         gotoxy(21,28); printf ("Não há Alunos cadastrados!!\n");
+        sleep(1.5);
         // Sleep(1500);
     }
     textcolor(15);
