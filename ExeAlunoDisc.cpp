@@ -68,6 +68,10 @@ void CriaDiscAux (int &Aux);
 
 // FUNCOES DE ALTERAR DADOS
 void AlterarAluno (TpAluno Vetor[TF], int TL);  // Fun??o que altera o nome de um aluno.
+void AlteraDisciplina(TpDisciplina vetorDisciplina[TF], int TL);
+//FUNÇÕES PARA EXCLUIR 
+void ExcluirDisciplina(TpDisciplina vetorDisciplina[TF], int &TLDisciplina, TpDisciplina vetorNotas[TF], int &TLNotas);
+
 // Fun??o principal (entry point)
 int main (void)
 {
@@ -295,23 +299,23 @@ void Executar (void)
                             clrscr();
                            op = MenuOrdena();
                             if(op == 1 ){
-                            	 OrdenarDisciplina(CodDisc,TLDisc, 1);
+                           	 	OrdenarDisciplina(CodDisc,TLDisc, 1);
                             } else {
-                            	 OrdenarDisciplina(Disciplina,TLDisc,2);
+                           		 OrdenarDisciplina(Disciplina,TLDisc,2);
                             }
                             getch();
                             break;
 
-                        case: 'D':
-                            case 'D':
-                            alteraDisciplina(Disciplina ,TLDisc);
+                        case 'D':
+                         
+                            AlteraDisciplina(Disciplina ,TLDisc);
                             clrscr();
                             getch();
                             break;
                         case 'E':
-                            case 'E':
+                            
                             clrscr();
-                            excluiDisciplina(Disciplina, TLDisc, Notas, TLNotas)
+                            ExcluirDisciplina(Disciplina, TLDisc, Notas, TLNotas);
                             getch();
                             break;
                     }   
@@ -916,10 +920,10 @@ void ExibirDisciplina (TpDisciplina vetorDisciplina[TF], int TLDisciplina) // co
             printf ("------------------------------------\n");
         }
     } else {
-        textcolor(RED);
+        textcolor(4);
         printf ("Não há Disciplinas Cadastradas!!\n");
     }
-    textcolor(WHITE);
+    textcolor(15);
 }
 
 
@@ -939,22 +943,22 @@ void alteraDisciplina(TpDisciplina vetorDisciplina[TF], int TL){
             char alteraNomeDisciplina = MenuConfirmaAltera();
             if (alteraNomeDisciplina == 'S'){
                 vetorDisciplina[i].Disciplina = novoNome;
-                textcolor(GREEN);
+                textcolor(10);
                 printf("Disciplina alterada com sucesso!\n");
-                textcolor(WHITE);
+                textcolor(15);
             }
             achouDisicplina = true;
         }
     }
 
     if (achouDisicplina == false){
-        textcolor(RED);
+        textcolor(4);
         printf("Disciplina não encontrada");
-        text(WHITE);
+        text(15);
     }
 }
 
-void excluiDisciplina(TpDisciplina vetorDisciplina[TF], int &TLDisciplina, TpDisciplina vetorNotas[TF], int &TLNotas){
+void ExcluirDisciplina(TpDisciplina VTD[TF], int &TLDisciplina, int &TLNotas){
     
     char auxExclui, opcao;
     int op, pos;
@@ -989,7 +993,7 @@ void excluiDisciplina(TpDisciplina vetorDisciplina[TF], int &TLDisciplina, TpDis
     }
 }
 
-void OrdenarDisciplina (TpDisciplina VTD[], int TLD, char op ){
+void OrdenarDisciplina (TpDisciplina VTD[], int TLD, int op ){
 	int i ,j, aux;
 	char auxD[30];
   switch(op){
