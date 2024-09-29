@@ -57,6 +57,7 @@ void CadCheio (int decisao); // Exibe mensagem de vetor cheio.
 // FUNCOES DE EXIBIR VETOR
 void ExibirAluno (TpAluno Vetor[TF], int Tl); // Exibe a lista de alunos.
 void ExibirDisciplina(TpDisciplina  VTD[TF], int TLD); //Exibe as Disciplinas 
+void ExibeNotas(TpNota VTN[TF], int TLN);
 
 // FUNCOES DE ORDENAR
 void OrdenarAluno (TpAluno Vetor[TF], int TL, char op); // Ordena a lista de alunos.
@@ -71,7 +72,7 @@ void AlterarAluno (TpAluno Vetor[TF], int TL);  // Fun??o que altera o nome de u
 void AlteraDisciplina(TpDisciplina vetorDisciplina[TF], int TL);
 //FUNÇÕES PARA EXCLUIR 
 void ExcluirDisciplina(TpDisciplina vetorDisciplina[TF], int &TLDisciplina, TpDisciplina vetorNotas[TF], int &TLNotas);
-
+void ExcluirNota(TpNota VTN[TF], int &TLN, );
 // Fun??o principal (entry point)
 int main (void)
 {
@@ -336,8 +337,14 @@ void Executar (void)
                             PainelPrincipal(); 
                             CadastrarNota(Notas, TLNotas, Alunos, TLAluno, Disciplina, TLDisc);
                             Sleep(1.5);
-                            // getch();
                             break;
+                        case 'B':
+                            clrscr();
+                            ExibirNota(notas, TLAluno);
+                            sleep(1.5);
+                            break;
+
+
                     }
                 } while (op != 27);
                 break;
@@ -974,7 +981,7 @@ void ExcluirDisciplina(TpDisciplina VTD[TF], int &TLDisciplina, int &TLNotas){
                 if(opcao == 'S'){
                     for(; pos<TLDisciplina-1; pos++)
                         vetorDisciplina[pos] = vetorDisciplina[pos+1];
-                    textcolor(GREEN);
+                    textcolor(10);
                     printf("Disciplina Excluída com sucesso!\n");
                     TLDisciplina--;
                 }
@@ -1038,4 +1045,52 @@ void OrdenarDisciplina (TpDisciplina VTD[], int TLD, int op ){
 			}
 			break;
 	}
-}			
+}	
+void ExibirNota(TpNota VTN[TF], int TLN ){
+    int i;
+    if(TLN){
+        printf("---------LISTA DE NOTAS----------\n");
+        for(i=0; i < TLN; i++){
+            textcolor(15);
+            printf("[RA]%s\t",VTN[i].RA);
+            printf("[COD]:%d\t",VTN[i].CodDisc);
+            printf("[NOTA]:%f\n",VTN[i].Nota);
+            printf("-------------------------------------------------------------------");   
+        }
+    }
+    else{
+        textcolor(4);
+        printf("Não tem Notas cadastradas na lista!!!\n");
+    }
+    getch();
+    textcolor(15);
+}	
+void ExcluirNota(TpNota VTN[TF], int &TLN, ){
+     
+    char auxExclui, opcao;
+    int op, pos;
+
+    if(TLN){
+        CriaRAAux(RAaux);
+        VerificaAluno(RAaux);
+        CriaAuxiliarCodDisciplina(op);
+        pos = VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 2);
+            if(VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 1)){
+
+                fflush(stdin);
+                opcao = MenuConfirmaExclusao();
+                if(opcao == 'S'){
+                    for(; pos<TLDisciplina-1; pos++)
+                        vetorDisciplina[pos] = vetorDisciplina[pos+1];
+                    textcolor(10);
+                    printf("Disciplina Excluída com sucesso!\n");
+                    TLDisciplina--;
+                }
+            }
+
+
+}
+
+
+
+
