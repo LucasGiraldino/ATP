@@ -1095,7 +1095,7 @@ void ExcluirNota(TpNota VTN[TF], int &TLN, TpDisciplina vetorDisciplina, int TLD
         
     }
 }
-//mostra  o vetor da nota do aluno que vai ser excluido.
+//mostra  o vetor da nota do aluno que vai ser excluido
 void  ExibedadosExclui(TpAluno VTN[TF], int TLN, int pos){
 
     printf("RA:%s",VTN[pos].RA);
