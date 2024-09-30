@@ -57,8 +57,9 @@ void CadCheio (int decisao); // Exibe mensagem de vetor cheio.
 // FUNCOES DE EXIBIR VETOR
 void ExibirAluno (TpAluno Vetor[TF], int Tl); // Exibe a lista de alunos.
 void ExibirDisciplina(TpDisciplina  VTD[TF], int TLD); //Exibe as Disciplinas 
-void ExibeNotas(TpNota VTN[TF], int TLN);
-void ExibirNota(TpNota VTN[TF], int TLN );
+//void ExibeNotas(TpNota VTN[TF], int TLN); 
+void ExibirNota(TpNota VTN[TF], int TLN ); // Exibe notas
+void ExibedadosExclui(TpAluno VTN[TF], int TLN, int pos); //Exibe vetor que vai ser excluido  
 
 // FUNCOES DE ORDENAR
 void OrdenarAluno (TpAluno Vetor[TF], int TL, char op); // Ordena a lista de alunos.
@@ -1063,29 +1064,43 @@ void ExibirNota(TpNota VTN[TF], int TLN ){
     getch();
     textcolor(15);
 }	
+//Excluir notas dos alunos
 void ExcluirNota(TpNota VTN[TF], int &TLN, TpDisciplina vetorDisciplina, int TLDisciplina) {
      
-    char auxExclui, opcao, RAaux[20];
+    char opcao, RAaux[20];
     int op, pos;
 
     if(TLN){
+        printf("Digite o RA do aluno que deseja excluir a nota");
         CriaRAAux(RAaux);
-        VerificaAluno(RAaux);
-        CriaAuxiliarCodDisciplina(op);
-        pos = VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 2);
+        if(VerificaAluno(Alunos, TLAlunos, RAaux)){
+            printf("Digite o código da disciplina");
+            CriaAuxiliarCodDisciplina(op);
+             pos = VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 2);
             if(VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 1)){
-
+                ExibedadosExclui(Notas, TLAluno, pos)
                 fflush(stdin);
                 opcao = MenuConfirmaExclusao();
                 if(opcao == 'S'){
-                    for(; pos<TLDisciplina-1; pos++)
-                        vetorDisciplina[pos] = vetorDisciplina[pos+1];
+                    for(; pos<TLNotas-1; pos++)
+                        notas[pos] = notas[pos+1];
                     textcolor(10);
-                    printf("Disciplina Excluída com sucesso!\n");
-                    TLDisciplina--;
+                    printf("Nota excluirda com sucesso!!!\n");
+                    TLNotas--;
                 }
             }
+
+        }
+        
+        
     }
+}
+//mostra  o vetor da nota do aluno que vai ser excluido.
+void  ExibedadosExclui(TpAluno VTN[TF], int TLN, int pos){
+
+    printf("RA:%s",VTN[pos].RA);
+    printf("COD:%d",VTN[pos].CodDisc);
+    printf("NOTA:%f",VTN[pos].Nota);
 }
 
 
