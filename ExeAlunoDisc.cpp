@@ -1083,7 +1083,7 @@ void ExcluirNota(TpNota VTN[TF], int &TLN, TpDisciplina vetorDisciplina, int TLD
                 opcao = MenuConfirmaExclusao();
                 if(opcao == 'S'){
                     for(; pos<TLNotas-1; pos++)
-                        notas[pos] = notas[pos+1];
+                        Notas[pos] = Notas[pos+1];
                     textcolor(10);
                     printf("Nota excluirda com sucesso!!!\n");
                     TLNotas--;
