@@ -1085,7 +1085,7 @@ void ExcluirNota(TpNota VTN[TF], int &TLN, TpDisciplina vetorDisciplina, int TLD
                     for(; pos<TLNotas-1; pos++)
                         Notas[pos] = Notas[pos+1];
                     textcolor(10);
-                    printf("Nota excluirda com sucesso!!!\n");
+                    printf("Nota excluida com sucesso!!!\n");
                     TLNotas--;
                 }
             }
