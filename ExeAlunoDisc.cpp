@@ -946,7 +946,7 @@ void ExcluirDisciplina(TpDisciplina vetDisciplina[TF], int &TLDisciplina, TpNota
             if(codExclusao == vetDisciplina[i].CodDisc)
                 for(int j=0; j<TLNotas; j++){
                     if(codExclusao == vetNotas[j].CodDisc){
-                        printf("Há notas do aluno %c RA: %c cadastradas nessa disciplina, deseje realmente excluir?")
+                        printf("Há notas cadastradas nessa disciplina, deseje realmente excluir?")
                         char confirmaExclusao = MenuConfirmaExclusao();
                         if(MenuConfirmaAltera == 'S'){
                             for(int pos=j; pos<TLNotas; pos++)
