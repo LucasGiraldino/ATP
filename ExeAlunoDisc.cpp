@@ -57,6 +57,9 @@ void CadCheio (int decisao); // Exibe mensagem de vetor cheio.
 // FUNCOES DE EXIBIR VETOR
 void ExibirAluno (TpAluno Vetor[TF], int Tl); // Exibe a lista de alunos.
 void ExibirDisciplina(TpDisciplina  VTD[TF], int TLD); //Exibe as Disciplinas 
+//void ExibeNotas(TpNota VTN[TF], int TLN); 
+void ExibirNota(TpNota VTN[TF], int TLN ); // Exibe notas
+void ExibedadosExclui(TpAluno VTN[TF], int TLN, int pos); //Exibe vetor que vai ser excluido  
 
 // FUNCOES DE ORDENAR
 void OrdenarAluno (TpAluno Vetor[TF], int TL, char op); // Ordena a lista de alunos.
@@ -68,6 +71,10 @@ void CriaDiscAux (int &Aux);
 
 // FUNCOES DE ALTERAR DADOS
 void AlterarAluno (TpAluno Vetor[TF], int TL);  // Fun??o que altera o nome de um aluno.
+void AlteraDisciplina(TpDisciplina vetorDisciplina[TF], int TL);
+//FUNÇÕES PARA EXCLUIR 
+void ExcluirDisciplina(TpDisciplina vetorDisciplina[TF], int &TLDisciplina, TpDisciplina vetorNotas[TF], int &TLNotas);
+void ExcluirNota(TpNota VTN[TF], int &TLN);
 // Fun??o principal (entry point)
 int main (void)
 {
@@ -131,13 +138,13 @@ void Moldura(int CI, int LI, int CF, int LF, int CorT, int CorF)
 		// Desenha as linhas horizontais (superior e inferior).
 	for(i=CI+1; i<CF; i++ ){
 		gotoxy(i,LI); printf("%c",205);
-//		Sleep(10);
+		Sleep(10);
 		gotoxy(i,LF);printf("%c",205);
 	}
  	// Desenha as linhas verticais (esquerda e direita).
 	for(i=LI+1; i<LF; i++){
 		gotoxy(CI,i); printf("%c",186);
-//		Sleep(10);
+		Sleep(10);
 		gotoxy(CF,i); printf("%c",186);
 	}
 	
@@ -163,7 +170,8 @@ void PainelPrincipal(void)
 	printf("MENSAGEM:");// Campo de mensagem no painel.
 }
 // Fun??o para captura de escolha do menu principal.
-char Escolha(void){
+char Escolha(void)
+{
 	textcolor(15);
 	gotoxy(13,6);printf ("---------- MENU ESCOLHA ------------");// T?tulo do menu.
 	// Op??es do menu.
@@ -233,7 +241,7 @@ void Executar (void)
                                     {
                                         textcolor(4);
                                       	gotoxy(21,28); printf ("ALNUO JA CADASTRADO!!\n");
-                                        // Sleep(1500);
+                                        Sleep(1500);
                                         textcolor(15);
                                     }
                                     if (TLAluno == TF)
@@ -293,25 +301,23 @@ void Executar (void)
 
                         case 'C'://Ordenar Disciplinas
                             clrscr();
-                           op = MenuOrdena();
-                            if(op == 1 ){
-                            	 OrdenarDisciplina(CodDisc,TLDisc, 1);
+                            op = MenuOrdena();
+                            if(op == 'A' ){
+                           	 	OrdenarDisciplina(Disciplina,TLDisc, 1);
                             } else {
-                            	 OrdenarDisciplina(Disciplina,TLDisc,2);
+                           		 OrdenarDisciplina(Disciplina,TLDisc,2);
                             }
                             getch();
                             break;
 
                         case: 'D'://Alterar Nome de Aluno
-                            case 'D':
                             alteraDisciplina(Disciplina ,TLDisc);
                             clrscr();
                             getch();
                             break;
                         case 'E'://Excluir Disciplina
-                            case 'E':
                             clrscr();
-                            excluiDisciplina(Disciplina, TLDisc, Notas, TLNotas)
+                            ExcluirDisciplina(Disciplina ,TLDisc, Notas, TLNotas);
                             getch();
                             break;
                     }   
@@ -319,6 +325,7 @@ void Executar (void)
                 } while (op != 27);
                 getch();
                 break;
+
             case 'C'://Nota do aluno 
                 clrscr();
                 PainelPrincipal(); 
@@ -332,8 +339,15 @@ void Executar (void)
                             PainelPrincipal(); 
                             CadastrarNota(Notas, TLNotas, Alunos, TLAluno, Disciplina, TLDisc);
                             Sleep(1.5);
-                            // getch();
+                    
                             break;
+                        case 'B':
+                            clrscr();
+                            ExibirNota(Notas, TLAluno);
+                            Sleep(1.5);
+                            break;
+
+
                     }
                 } while (op != 27);
                 break;
@@ -343,14 +357,14 @@ void Executar (void)
 	        		cont++;
 	        		textcolor(10);
 	        		gotoxy(21,28);printf("Entradas inseridas com sucesso");
-	        		// Sleep(1500);
+	        		Sleep(1500);
                     Sleep(1.5);
 					clrscr();	
         		}else{
         			textcolor(4);
         			gotoxy(21,28);printf("Entradas j? foram inseridas!!!");
         			// Sleep(1500);
-                    usleep(1500);
+                    // usleep(1500);
         			clrscr();
         		}
         		textcolor(15);
@@ -403,10 +417,11 @@ char MenuNota(void)
 }
 //Menu ordena
 int Menuordena(void){
+    int aux;
 	printf("-------------Ordenar Disciplina------------\n");
 	printf("[1] CÓDIGO");
 	printf("[2] DISCIPLINA");
-	scanf("%d" &aux);
+	scanf("%d", &aux);
 	return  aux;
 }
 //ordena os alunos pelo RA ou pelo Nome 
@@ -444,8 +459,8 @@ void Ordenar (TpAluno Vetor[TF], int TL, char op)
         case 'C':
             textcolor(4);
             printf ("Não há Dados cadastrados\n");//Caso n?o exista alunos cadastrados no vetor.
-            Sleep (1.7);
-            // Sleep (1700);
+            // Sleep (1.7);
+            Sleep (1700);
             break;
     }
 }
@@ -484,8 +499,8 @@ void CadastraAluno (TpAluno Vet[TF], int &TL, char Aux[])
         TL++; // incrementa o valor l?gico do vetor
         textcolor(10);
         gotoxy(21,28); printf ("CADASTRADO COM SUCESSO!!\n");
-        Sleep(1.7);
-        // Sleep(1500);//Tempo de 1,5 segundos
+        // Sleep(1.7);
+        Sleep(1500);//Tempo de 1,5 segundos
         textcolor(15);//reseta a cor 
     }
     else
@@ -493,8 +508,7 @@ void CadastraAluno (TpAluno Vet[TF], int &TL, char Aux[])
     	//Cadastro cheio 
         textcolor(4);
         gotoxy(21,28); printf ("CADASTRO CHEIO!!\n");
-        Sleep(1.7);
-        // Sleep(1500);
+        Sleep(1500);
     }
     textcolor(15);
 }
@@ -504,13 +518,13 @@ void CadCheio (int decisao){
 	    case 1:
 	        textcolor(4);
 	        gotoxy(21,28); printf ("CADASTRO DE ALUNO CHEIO!!\n");//Printa quando o vetor estiver cheio
-	        // Sleep(1500);
+	        Sleep(1500);
 	        textcolor(15);
 	        break;
 	    case 2:
 	        textcolor(4);
 	        gotoxy(21,28); printf ("CADASTRO DE DISCIPLINAS CHEIO!!\n");//Printa quando o vetor estiver cheio
-	        // Sleep(1500);
+	         Sleep(1500);
 	        textcolor(15);
 	        break;
     }
@@ -558,7 +572,7 @@ void ExibirAluno (TpAluno Vetor[TF], int Tl)
         {
             gotoxy(53,l); 
             printf ("RA: %s", Vetor[i].RA);
-            Sleep (1500); 
+            // Sleep (1500); 
             l++;
             gotoxy(53,l);
             printf ("NOME: %s", Vetor[i].Nome);
@@ -573,8 +587,8 @@ void ExibirAluno (TpAluno Vetor[TF], int Tl)
     {
         textcolor(4);
         gotoxy(21,28); printf ("Não há Alunos cadastrados!!\n");
-        Sleep(1.5);
-        // Sleep(1500);
+        // Sleep(1.5);
+        Sleep(1500);
     }
     textcolor(15);
 }
@@ -611,13 +625,13 @@ void OrdenarAluno (TpAluno Vetor[TF], int TL, char op)
                     }
             textcolor(10);
            	gotoxy(21,28); printf ("DADOS ORDENADOS!!\n");
-        //    Sleep(1500);
+            Sleep(1500);
             break;
         case 'C'://Quando n?o existe dados no vetor
         	PainelPrincipal(); 
             textcolor(4);
             gotoxy(21,28);printf ("Não há Dados cadastrados\n");
-			// Sleep(1500);
+		 Sleep(1500);
             break;
     }
 }
@@ -756,13 +770,17 @@ void CadastrarNota (TpNota VetNota[TF], int &TLNota, TpAluno VetAluno[TF], int T
     }
 }
 
-void CadastraDisciplina (TpDisciplina VetorDisciplina[TF], int &TL){ //codigo Gabriel
+void CadastraDisciplina (TpDisciplina VetorDisciplina[TF], int &TL)
+{
 
     int codigoDisciplina;
     char disciplina[30];
     bool disciplinaEncontrada = false;
 
     do{
+        clrscr();
+        PainelPrincipal();
+        gotoxy(13,8); printf ("[0] - SAIR\n");
         printf("Digite seu código: \n");
         scanf("%d", &codigoDisciplina);
         printf("Digite o nome da disciplina: \n");
@@ -770,25 +788,37 @@ void CadastraDisciplina (TpDisciplina VetorDisciplina[TF], int &TL){ //codigo Ga
         
         for (int i = 0; i< TL; i++){
             if (codigoDisciplina == VetorDisciplina[i].CodDisc || disciplina == VetorDisciplina[i].Disciplina){
-                 printf("Disciplina já cadastrada!\n");
-                 disciplinaEncontrada = true;
+                textcolor(4);
+                gotoxy(21,28);
+                printf("Disciplina já cadastrada!\n");
+                Sleep(1700);
+                textcolor(15);
+                disciplinaEncontrada = true;
             }
         }
 
         if (TL < TF && disciplinaEncontrada == false){
             VetorDisciplina[TL].CodDisc = codigoDisciplina;
-            VetorDisciplina[TL].Disciplina = disciplina;
-            textcolor(GREEN);
-            printf ("CADASTRADO COM SUCESSO!!\n");
-            textcolor(WHITE);
+            strcpy(VetorDisciplina[TL].Disciplina, disciplina);
+            textcolor(10);
+            printf ("Cadastro realizado com sucesso!\n");
+            textcolor(15);
             printf ("---------------------------------\n");
             TL++;
         } else {
-            textcolor(RED);
-            printf ("CADASTRO CHEIO!\n");
+            textcolor(4);
+            gotoxy(21,28);
+            printf ("Não há espaço para cadastrar!\n");
+            Sleep(1700);
+            textcolor(15);
         }
 
-    } while (op != 27);
+        clrscr();
+            PainelPrincipal();
+            textcolor(15);
+            gotoxy(13,8); printf ("[0] - SAIR\n");
+
+    } while(op != 27);
 }
 
 void CriaDiscAux (int &Aux){
@@ -832,6 +862,46 @@ void ExibirDisciplina (TpDisciplina vetorDisciplina[TF], int TLDisciplina){ // c
     textcolor(WHITE);
 }
 
+void OrdenarDisciplina (TpDisciplina VTD[], int TLD, int op){
+	int i ,j, aux;
+	char auxD[30];
+    if (TLD) {
+        switch(op){
+            case 1:
+                for(i=0; i < TLD - 1; i++)
+                    for(j= i+1; j < TLD; j++){
+                        if(VTD[i].CodDisc < VTD[j].CodDisc){
+                            aux = VTD[i].CodDisc;
+                            VTD[i].CodDisc = VTD[j].CodDisc;
+                            VTD[j].CodDisc = aux; 
+                        }
+                    }
+                textcolor(10);
+                printf("Disciplinas ordenada!!!\n");
+                Sleep(1500);
+                textcolor(15);	
+                break;
+            case 2:    
+                for(i=0; i < TLD - 1; i++)
+                    for(j= i+1; j < TLD; j++){
+                        if(strcasecmp(VTD[i].Disciplina, VTD[j].Disciplina) == 1){
+                            strcpy(auxD ,VTD[i].Disciplina);
+                            strcpy(VTD[i].Disciplina , VTD[j].Disciplina);
+                            strcpy(VTD[j].Disciplina, auxD);
+                        }        
+                    }
+                    textcolor(10);
+                    printf("Disciplinas ordenada!!!\n");
+                    Sleep(1500);
+                    textcolor(15);
+                break;
+        }
+	} else {
+        printf("Não há disciplinas cadastradas!\n");
+    }
+    
+}	
+
 void alteraDisciplina(TpDisciplina vetorDisciplina[TF], int TL){
 
     int codigoDisciplina;
@@ -847,25 +917,72 @@ void alteraDisciplina(TpDisciplina vetorDisciplina[TF], int TL){
             scanf("%s", &novoNome);
             char alteraNomeDisciplina = MenuConfirmaAltera();
             if (alteraNomeDisciplina == 'S'){
-                vetorDisciplina[i].Disciplina = novoNome;
-                textcolor(GREEN);
+                strcpy(vetorDisciplina[i].Disciplina, novoNome);
+                textcolor(10);
                 printf("Disciplina alterada com sucesso!\n");
-                textcolor(WHITE);
+                textcolor(15);
             }
             achouDisicplina = true;
         }
     }
 
     if (achouDisicplina == false){
-        textcolor(RED);
+        textcolor(4);
         printf("Disciplina não encontrada");
-        text(WHITE);
+        textcolor(15);
     }
 }
 
-void excluiDisciplina(TpDisciplina vetorDisciplina[TF], int &TLDisciplina, TpDisciplina vetorNotas[TF], int &TLNotas){
-    
+void ExcluirDisciplina(TpDisciplina vetDisciplina[TF], int &TLDisciplina, TpNota vetNotas[TF], int &TLNotas, TpAluno vetAluno[TF], int &TLAluno){
+   
     char auxExclui, opcao;
+    int codExclusao;
+
+    if(TLDisciplina){
+        printf("Informe o código da disciplina que deseja excluir: \n");
+        scanf("%d", &codExclusao);
+
+        for(int i=0; i<TLDisciplina; i++)
+            if(codExclusao == vetDisciplina[i].CodDisc)
+                for(int j=0; j<TLNotas; j++){
+                    if(codExclusao == vetNotas[j].CodDisc){
+                        printf("Há notas do aluno %c RA: %c cadastradas nessa disciplina, deseje realmente excluir?")
+                        char confirmaExclusao = MenuConfirmaExclusao();
+                        if(MenuConfirmaAltera == 'S'){
+                            for(int pos=j; pos<TLNotas; pos++)
+                                vetNotas[pos] = vetNotas[pos+1];
+                            TLNotas--;
+                            for(int pos=i; pos<TLDisciplina; pos++)
+                                vetDisciplina[pos] = vetDisciplina[pos+1];
+                            TLDisciplina--;
+                        }
+                    }
+    }    
+}
+
+void ExibirNota(TpNota VTN[TF], int TLN ){
+    int i;
+    if(TLN){
+        printf("---------LISTA DE NOTAS----------\n");
+        for(i=0; i < TLN; i++){
+            textcolor(15);
+            printf("[RA]%s\t",VTN[i].RA);
+            printf("[COD]:%d\t",VTN[i].CodDisc);
+            printf("[NOTA]:%f\n",VTN[i].Nota);
+            printf("-------------------------------------------------------------------");   
+        }
+    }
+    else{
+        textcolor(4);
+        printf("Não tem Notas cadastradas na lista!!!\n");
+    }
+    getch();
+    textcolor(15);
+}	
+//Excluir notas dos alunos
+void ExcluirNota(TpNota VTN[TF], int &TLN, TpDisciplina vetorDisciplina, int TLDisciplina) {
+     
+    char opcao, RAaux[20];
     int op, pos;
 
     if(TLDisciplina){
@@ -884,48 +1001,35 @@ void excluiDisciplina(TpDisciplina vetorDisciplina[TF], int &TLDisciplina, TpDis
                 TLDisciplina--;
             }
         }  
+    if(TLN){
+        printf("Digite o RA do aluno que deseja excluir a nota");
+        CriaRAAux(RAaux);
+        if(VerificaAluno(Alunos, TLAluno, RAaux)){
+            printf("Digite o código da disciplina");
+            CriaAuxiliarCodDisciplina(op);
+             pos = VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 2);
+            if(VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 1)){
+                ExibedadosExclui(Notas, TLAluno, pos)
+                fflush(stdin);
+                opcao = MenuConfirmaExclusao();
+                if(opcao == 'S'){
+                    for(; pos < TLNotas-1; pos++)
+                        Notas[pos] = Notas[pos+1];
+                    textcolor(10);
+                    printf("Nota excluida com sucesso!!!\n");
+                    TLNotas--;
+                }
+            }
+
+        }
+        
+        
     }
 }
+//mostra  o vetor da nota do aluno que vai ser excluido
+void  ExibedadosExclui(TpAluno VTN[TF], int TLN, int pos){
 
-void OrdenarDisciplina(TpDisciplina VTD[], int TLD, char op){
-	int i ,j, aux;
-	char auxD[30];
-  switch(op){
-  		case 1:
-			if(TLD){
-				for(i=0; i < TLD - 1; i++)
-					for(j= i+1; j < TLD; j++)
-						if(VTD[i].CodDisc > VTD[i].CodDisc){
-							aux = VTD[i].CodDisc;
-							VTD[i].CodDisc = VTD[i+1].CodDisc;
-							VTD[i].CodDisc = aux; 
-						}
-						
-				textcolor(10);
-				printf("Disciplinas ordenadas!\n");
-				Sleep(1500);
-				textcolor(15);	
-			} else {
-				printf("Não há disciplinas cadastradas!\n");
-			}
-			break;
-		case 2:
-			if(TLD){
-				for(i=0; i < TLD - 1; i++)
-					for(j= i+1; j < TLD; j++){
-						if(VTD[i].Disciplina > VTD[i].Disciplina){
-							strcpy(auxD ,VTD[i].Disciplina);
-							strcpy(VTD[i].Disciplina , VTD[i+1].Disciplina);
-							strcpy(VTD[i].Disciplina, auxD);
-						}
-					}
-					textcolor(10);
-					printf("Disciplinas ordenadas!\n");
-					Sleep(1500);
-					textcolor(15);	
-			} else {
-				printf("Não há disciplinas cadastradas!\n");
-			}
-			break;
-	}
-}			
+    printf("RA:%s",VTN[pos].RA);
+    printf("COD:%d",VTN[pos].CodDisc);
+    printf("NOTA:%f",VTN[pos].Nota);
+}
