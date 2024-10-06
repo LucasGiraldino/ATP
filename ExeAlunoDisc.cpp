@@ -54,6 +54,9 @@ void CadastraDisciplina (TpDisciplina VetorDisciplina[TF], int &TL);
 // MENSAGEM DE VETOR CHEIO
 void CadCheio (int decisao); // Exibe mensagem de vetor cheio.
 
+
+
+
 // FUNCOES DE EXIBIR VETOR
 void ExibirAluno (TpAluno Vetor[TF], int Tl); // Exibe a lista de alunos.
 void ExibirDisciplina(TpDisciplina  VTD[TF], int TLD); //Exibe as Disciplinas 
@@ -61,23 +64,36 @@ void ExibirDisciplina(TpDisciplina  VTD[TF], int TLD); //Exibe as Disciplinas
 void ExibirNota(TpNota VTN[TF], int TLN ); // Exibe notas
 void ExibeDadosExclui(TpNota VTN[TF], int TLN, int pos); //Exibe vetor que vai ser excluido  
 
+
 // FUNCOES DE ORDENAR
 void OrdenarAluno (TpAluno Vetor[TF], int TL, char op); // Ordena a lista de alunos.
 void OrdenarDisciplina(TpDisciplina VTD[TF], int TLD, int op);
 void OrdenaNotasRA (TpNota VetNotas[TF], int TLNotas); // Ordena Notas pelo RA
 
+
+
 // FUNCAO PRA CRIAR UM AUX
 void CriaRAAux(char Aux[]); // Fun??o que cria um RA auxiliar.
 void CriaDiscAux (int &Aux);
 
+
+
+
+
 // FUNCOES DE ALTERAR DADOS
 void AlterarAluno (TpAluno Vetor[TF], int TL);  // Fun??o que altera o nome de um aluno.
 void AlteraDisciplina(TpDisciplina vetorDisciplina[TF], int TL);
+
+
+
 //FUNÇÕES PARA EXCLUIR 
 void ExcluirDisciplina(TpDisciplina vetDisciplina[TF], int &TLDisciplina, TpNota vetNotas[TF], int &TLNotas);
-void ExcluirNota(TpNota VTN[TF], int &TLN);
 void ExcluiNotaRA (TpNota VetNotas[TF], int &TLNotas,char RAaux[13]);
 void ExcluiAluno (TpAluno VetALunos[TF], int &TLAlunos, TpNota VetNotas[TF], int &TLNotas, TpDisciplina Disciplinas[TF], int TLDisc);
+void ExcluirNota(TpNota VTN[TF], int &TLN, TpDisciplina vetorDisciplina[TF], int TLDisciplina, TpAluno Alunos[TF], int TLAluno)
+
+
+
 // Fun??o principal (entry point)
 int main (void)
 {
@@ -376,8 +392,6 @@ void Executar (void)
         			textcolor(4);
         			gotoxy(21,28);printf("Entradas j? foram inseridas!!!");
         			Sleep(1500);
-                    // sleep(1.5);
-                    // usleep(1500);
         			clrscr();
         		}
         		textcolor(15);
@@ -703,26 +717,32 @@ char MenuConfirmaAltera (void){
 }
 
 char MenuConfirmaExclusao (void){
-    printf ("CONFIRMA A EXCLUSÃO?\n");
-    printf ("[S] - SIM\n");
-    printf ("[N] - NÃO\n");
-    return toupper(getch());
+    gotoxy(12,6); printf ("CONFIRMA A EXCLUSÃO?\n");
+    gotoxy(13,11);printf ("[S] - SIM\n");
+    gotoxy(13,12); printf ("[N] - NÃO\n");
+    gotoxy(21,28);return toupper(getch());
 }
 
 void ExibiNotaAluno (TpNota Notas[TF], int TLNotas, char RAaux[13], TpAluno Alunos[TF], int TLAlunos, TpDisciplina Disciplina[TF], int TLDisciplina)
 {
-    int i, posAluno, j, posNota, posDisc;
+    int i, posAluno, j, posNota, posDisc, l=0;
 
     posAluno = VerificaAluno(Alunos, TLAlunos, RAaux, 2);
     posNota = VerificaNotaRA(Notas, TLNotas, RAaux);
     posDisc = VerificaDisciplina(Disciplina, TLDisciplina, Notas[posNota].CodDisc, 2);
-    printf ("--------- ALUNO ------\n");
-    printf ("RA: %s", RAaux);
-    printf ("ALUNO: %s", Alunos[posAluno].Nome);
-    printf ("--------- DISCIPLINA --------\n");
-    printf ("COD. DA DISCIPLINA: %d\n", Disciplina[posDisc].CodDisc);
-    printf ("DISCIPLINA: %s\n", Disciplina[posDisc].Disciplina);
-    printf ("NOTA: %.2f\n", Notas[posNota].Nota);
+    gotoxy(53,l); printf ("--------- ALUNO ------\n");
+    l++;
+    gotoxy(53,l); printf ("RA: %s", RAaux);
+     l++;
+    gotoxy(53,l; printf ("ALUNO: %s", Alunos[posAluno].Nome);
+     l++;
+    gotoxy(53,l);printf ("--------- DISCIPLINA --------\n");
+     l++;
+    gotoxy(53,l); printf ("COD. DA DISCIPLINA: %d\n", Disciplina[posDisc].CodDisc);
+     l++;
+    gotoxy(53,l);  printf ("DISCIPLINA: %s\n", Disciplina[posDisc].Disciplina);
+     l++;
+    gotoxy(53,l);  printf ("NOTA: %.2f\n", Notas[posNota].Nota);
 }
 
 int VerificaNotaRA (TpNota VetNotas[TF], int TLNotas, char RAaux[13])
@@ -782,15 +802,15 @@ void CadastrarNota (TpNota VetNota[TF], int &TLNota, TpAluno VetAluno[TF], int T
         if (VerificaDisciplina(VetDisc, TLDisc, CodAux, 1)){
             posDisc = VerificaDisciplina(VetDisc, TLDisc, CodAux, 2);
             if (!VerificaNota(VetNota, TLNota, RAaux, CodAux, 1)){
-                printf ("----- ALUNO -----\n");
-                printf ("RA: %s\n", RAaux);
-                printf ("NOME: %s\n", VetAluno[posAluno].Nome);
-                printf ("----- DISCIPLINA -----\n");
-                printf ("COD DA DISCIPLINA: %d\n", CodAux);
-                printf ("DISCIPLINA: %s\n", VetDisc[posDisc].Disciplina);
-                printf ("-------------------------\n");
-                printf ("NOTA: ");
-                scanf ("%f", &VetNota[TLNota].Nota);
+                gotoxy(53,7);printf ("----- ALUNO -----\n");
+                gotoxy(53,8);printf ("RA: %s\n", RAaux);
+                gotoxy(53,9);printf ("NOME: %s\n", VetAluno[posAluno].Nome);
+                gotoxy(53,10);printf ("----- DISCIPLINA -----\n");
+                gotoxy(53,11);printf ("COD DA DISCIPLINA: %d\n", CodAux);
+                gotoxy(53,12);printf ("DISCIPLINA: %s\n", VetDisc[posDisc].Disciplina);
+                gotoxy(53,13);printf ("-------------------------\n");
+                gotoxy(53,14);printf ("NOTA: ");
+                gotoxy(53,7); scanf ("%f", &VetNota[TLNota].Nota);
                 VetNota[TLNota].CodDisc = VetDisc[posDisc].CodDisc;
                 strcpy(VetNota[TLNota].RA, RAaux);
                 TLNota++;
@@ -808,20 +828,20 @@ void CadastrarNota (TpNota VetNota[TF], int &TLNota, TpAluno VetAluno[TF], int T
                 printf ("----- NOTA -------\n");
                 printf ("NOTA: %.1f", VetNota[posNota].Nota);
                 Sleep(5000);
-                // sleep(5);
+               
             }
         } else {
             textcolor(4);
             gotoxy(21,28); printf ("DISCIPLINA NAO ENCONTRADA!!\n");
             Sleep(1700);
-            // sleep(1.7);
+        
             textcolor(15);
         }
     } else {
         textcolor(4);
         gotoxy(21,28); printf ("ALUNO NAO ENCONTRADO!!\n");
         Sleep(1700);
-        // sleep(1.7);
+        
         textcolor(15);
     }
 }
@@ -863,10 +883,8 @@ void CadastraDisciplina (TpDisciplina VetorDisciplina[TF], int &TL)
             TL++;
         } else {
             textcolor(4);
-            gotoxy(21,28);
-            printf ("Não há espaço para cadastrar!\n");
+            gotoxy(21,28);printf ("Não há espaço para cadastrar!\n");
             Sleep(1700);
-            // sleep(1.7);
             textcolor(15);
         }
 
@@ -907,18 +925,18 @@ int VerificaDisciplina (TpDisciplina Vet[TF], int TL, int Aux, int deci){
 }
 
 void ExibirDisciplina (TpDisciplina vetorDisciplina[TF], int TLDisciplina){ // codigo Gabriel
-    int i;
+    int i, l=8;
     if (TLDisciplina){
-        printf ("Código Disciplina \t Nome Disciplina\n");
+       gotoxy(53,7);printf printf ("Código Disciplina \t Nome Disciplina\n");
         for (i=0;i<TLDisciplina;i++){
-            printf ("%d \t %s\n", vetorDisciplina[i].CodDisc, vetorDisciplina[i].Disciplina);
-            printf ("------------------------------------\n");
+            gotoxy(53,l++);printfprintf ("%d \t %s\n", vetorDisciplina[i].CodDisc, vetorDisciplina[i].Disciplina);
+            gotoxy(53,l++);printfprintf ("------------------------------------\n");
         }
     } else {
-        textcolor(RED);
-        printf ("Não há Disciplinas Cadastradas!\n");
+        textcolor(4);
+        gotoxy(21,28);printf ("Não há Disciplinas Cadastradas!\n");
     }
-    textcolor(WHITE);
+    textcolor(15);
 }
 
 void OrdenarDisciplina (TpDisciplina VTD[], int TLD, int op){
@@ -936,9 +954,8 @@ void OrdenarDisciplina (TpDisciplina VTD[], int TLD, int op){
                         }
                     }
                 textcolor(10);
-                printf("Disciplinas ordenada!!!\n");
+                gotoxy(21,28); printf("Disciplinas ordenada!!!\n");
                 Sleep(1500);
-                // sleep(1.5);
                 textcolor(15);	
                 break;
             case 2:    
@@ -951,16 +968,16 @@ void OrdenarDisciplina (TpDisciplina VTD[], int TLD, int op){
                         }        
                     }
                     textcolor(10);
-                    printf("Disciplinas ordenada!!!\n");
+                    gotoxy(21,28); printf("Disciplinas ordenada!!!\n");
                     Sleep(1500);
-                    // sleep(1.5);
                     textcolor(15);
                 break;
         }
 	} else {
-        printf("Não há disciplinas cadastradas!\n");
+        textcolor(4);
+        gotoxy(21,28);printf("Não há disciplinas cadastradas!\n");
     }
-    
+    textcolor(15);
 }	
 
 void AlteraDisciplina(TpDisciplina vetorDisciplina[TF], int TL){
@@ -969,7 +986,7 @@ void AlteraDisciplina(TpDisciplina vetorDisciplina[TF], int TL){
     bool achouDisicplina = false;
     char novoNome[30];
 
-    printf("Digite o código da disciplina: \n");
+    gotoxy(53,l++)printf("Digite o código da disciplina: \n");
     scanf("%d", &codigoDisciplina);
 
     for(int i = 0; i<TL; i++){
@@ -1028,7 +1045,7 @@ void ExcluiAluno (TpAluno VetALunos[TF], int &TLAlunos, TpNota VetNotas[TF], int
 
 void ExcluirDisciplina(TpDisciplina vetDisciplina[TF], int &TLDisciplina, TpNota vetNotas[TF], int &TLNotas){
    
-    char auxExclui, opcao, confirmaExclusao;
+    char auxExclui[20], opcao, confirmaExclusao;
     int codExclusao;
 
     if(TLDisciplina){
@@ -1051,6 +1068,8 @@ void ExcluirDisciplina(TpDisciplina vetDisciplina[TF], int &TLDisciplina, TpNota
                         }
                     }
                 }
+            }
+        }    
     }    
 }
 
@@ -1077,28 +1096,11 @@ void ExcluirNota(TpNota VTN[TF], int &TLN, TpDisciplina vetorDisciplina[TF], int
      
     char opcao, RAaux[20];
     int op, pos;
-
-    if(TLDisciplina){
-        CriaDiscAux(op);
-        pos = VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 2);
-        if(VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 1)){
-
-            fflush(stdin);
-            opcao = MenuConfirmaExclusao();
-            if(opcao == 'S'){
-                for(; pos<TLDisciplina-1; pos++)
-                    vetorDisciplina[pos] = vetorDisciplina[pos+1];
-                textcolor(10);
-                printf("Disciplina Excluída com sucesso!\n");
-                TLDisciplina--;
-            }
-        }  
-    }
     if(TLN){
         printf("Digite o RA do aluno que deseja excluir a nota");
         CriaRAAux(RAaux);
         if(VerificaAluno(Alunos, TLAluno, RAaux, 1)){
-            printf("Digite o código da disciplina");
+            gotoxy(53,5);printf("Digite o código da disciplina");
             CriaDiscAux(op);
              pos = VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 2);
             if(VerificaDisciplina(vetorDisciplina, TLDisciplina, op, 1)){
@@ -1109,15 +1111,24 @@ void ExcluirNota(TpNota VTN[TF], int &TLN, TpDisciplina vetorDisciplina[TF], int
                     for(; pos < TLN-1; pos++)
                         VTN[pos] = VTN[pos+1];
                     textcolor(10);
-                    printf("Nota excluida com sucesso!!!\n");
+                    gotoxy(21,28); printf("Nota excluida com sucesso!!!\n");
                     TLN--;
                 }
+            }else{
+                textcolor(4);
+                gotoxy(21,28);printf("Essa disciplina não foi encontrada!!!");
             }
 
+        }else{
+            textcolor(4);
+            gotoxy(21,28);printf("Aluno não encontrado !!!");
         }
-        
-        
+    }else{
+        textcolor(4);
+        gotoxy(21,28);printf("Não há dados cadastrados!!!")
     }
+    textcolor(15);
+
 }
 //mostra  o vetor da nota do aluno que vai ser excluido
 void ExibeDadosExclui(TpNota VTN[TF], int TLN, int pos)
