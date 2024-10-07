@@ -1150,3 +1150,27 @@ void OrdenaNotasRA (TpNota VetNotas[TF], int TLNotas){
         }
     }
 }
+void Media (TpNota VetNota[TF], int TLNota, TpDisciplina VetDisciplina[TF], int TLDisc)
+{
+    int i, CodAux, j, pos;
+    if (TLNota)
+    {
+        for (i=0;i<TLN;i++)
+        {
+            CodAux = VetNota[i].CodDisc;
+            for (j=i;j<TLNota;j++)
+            {
+                if (VetNota[TLNota].Nota <= 6)
+                {
+                    pos=0;
+                    while (pos < TLDisc && CodAux != VetDsiciplina[pos].CodDisc)
+                        pos++;
+                    printf ("-------------------------\n");
+                    printf ("COD. DA DISCIPLINA: %d\n", CodAux);
+                    printf ("DISCIPLINA: %s\n", VetDisciplina[pos].Disciplina);
+                    j=TLNota;
+                }
+            }
+        }
+    }
+}
