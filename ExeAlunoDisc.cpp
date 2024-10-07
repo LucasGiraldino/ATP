@@ -85,6 +85,8 @@ void AlterarAluno (TpAluno Vetor[TF], int TL);  // Fun??o que altera o nome de u
 void AlteraDisciplina(TpDisciplina vetorDisciplina[TF], int TL);
 void AlteraNota(TpNota Notas[TF], int TLNotas, TpAluno Alunos[TF], int TLAluno, TpDisciplina Disciplina[TF], int TLDisciplina);
 
+void Media (TpNota VetNota[TF], int TLNota, TpDisciplina VetDisciplina[TF], int TLDisc);
+
 
 
 //FUNÇÕES PARA EXCLUIR 
