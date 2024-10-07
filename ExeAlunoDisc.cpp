@@ -91,7 +91,7 @@ void AlteraNota(TpNota Notas[TF], int TLNotas, TpAluno Alunos[TF], int TLAluno, 
 void Media (TpNota VetNota[TF], int TLNota, TpDisciplina VetDisciplina[TF], int TLDisc);
 void AlunosReprovados (TpNota VetNotas[TF], int TLNotas, TpAluno VetAlunos[TF], int TLAlunos);
 void ConsultaPorLetra(TpAluno VetAlunos[TF], int TLAlunos, char letra);
-
+void ConsultaDiscPorTermo (TpDisciplina VetDisc[TF], int TLDisciplina, char termo[15]);
 
 //FUNÇÕES PARA EXCLUIR 
 void ExcluirDisciplina(TpDisciplina vetDisciplina[TF], int &TLDisciplina, TpNota vetNotas[TF], int &TLNotas);
@@ -225,7 +225,7 @@ void Entradas(TpAluno vet[TF], int &TLAlunos) {
 void Executar (void)
 {
     int TLAluno=0, TLDisc=0, TLNotas=0, CodAux, cont, DiscAux; // Vari?veis de controle.
-    char opEscolha, op, RAaux[13], opAux, letra; // Vari?veis para capturar op??es do menu.
+    char opEscolha, op, RAaux[13], opAux, letra, termo[15]; // Vari?veis para capturar op??es do menu.
 	PainelPrincipal(); // Chama o painel principal.
     TpAluno Alunos[TF];  // Vetor de alunos.
     TpDisciplina Disciplina[TF];  // Vetor de disciplinas.
@@ -486,9 +486,19 @@ void Executar (void)
                     case 'D':
                         clrscr();
                         PainelPrincipal();
+                        Enter();
+                        gotoxy(53,6); printf ("PROCURA PELA DISCIPLINA PELO TERMO");
+                        gotoxy(53,7); printf ("-----------------------------------------------------------");
+                        gotoxy(53,8); printf ("TERMO QUE DESEJA PROCURAR: ");
+                        gotoxy(80,8); gets(termo);
+                        ConsultaDiscPorTermo(Disciplina, TLDisc, termo);
+                        getch();
+                    case 'E':
+                        clrscr();
+                        PainelPrincipal();
                         Media(Notas, TLNotas, Disciplina, TLDisc);
                         break;
-                    case 'E':
+                    case 'F':
                         getch();
                         break;
                     default:
@@ -1421,7 +1431,7 @@ void ConsultaPorLetra(TpAluno VetAlunos[TF], int TLAlunos, char letra)
 {
     int pos=0, l=7;
     while (pos < TLAlunos && VetAlunos[pos].RA[0] != letra)
-    pos++;
+        pos++;
     if (pos < TLAlunos)
     {
         pos=0;
@@ -1435,6 +1445,13 @@ void ConsultaPorLetra(TpAluno VetAlunos[TF], int TLAlunos, char letra)
                 l++;
                 gotoxy(53,l);printf ("--------------------------------");
                 sleep(1.5);
+                if (l < 27)
+                {
+                    clrscr();
+                    PainelPrincipal();
+                    Enter();
+                    l=7;
+                }
             }
             pos++;
         }
@@ -1444,5 +1461,44 @@ void ConsultaPorLetra(TpAluno VetAlunos[TF], int TLAlunos, char letra)
         textcolor(4);
         gotoxy(21,28); printf ("ALUNO COM LETRA INCIAL NAO ENCONTRADO");
         sleep(1.5);
+    }
+}
+
+void ConsultaDiscPorTermo (TpDisciplina VetDisc[TF], int TLDisciplina, char termo[15])
+{
+    int pos, letra, i, l=9, cont=0;
+    for (i=0;i<TLDisciplina;i++)
+    {
+        pos = 0;
+        letra = 0;
+        while (pos < strlen(VetDisc[i].Disciplina))
+        {
+            if (VetDisc[i].Disciplina[pos] == termo[letra])
+                letra++;
+            pos++;
+        }
+        if (letra == strlen(termo))
+        {
+            gotoxy(53,l); printf ("----------------------------------");
+            gotoxy(53,++l); printf ("COD. DA DISCIPLINA: %d", VetDisc[i].CodDisc);
+            gotoxy(53,++l); printf ("NOME: %s", VetDisc[i].Disciplina);
+            gotoxy(53,++l); printf ("-----------------------------------");
+            l++;
+            cont++;
+            if (l < 27)
+            {
+                clrscr();
+                PainelPrincipal();
+                Enter();
+                l=10;
+            }
+        }
+    }
+    if (cont==0)
+    {
+        textcolor(4);
+        gotoxy(21,28); printf ("TERMO NÃO ENCONTRADO!!\n");
+        sleep(1.5);
+        // Sleep(1500);
     }
 }
